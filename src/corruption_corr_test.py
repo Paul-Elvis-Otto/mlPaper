@@ -8,7 +8,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Construct the path relative to the script directory
 VDEM_PARQUET_PATH = os.path.join(
-    script_dir, "../data/vdem_subset_1970_nomean_strfix.parquet"
+    script_dir, "../data/vdem_cleaned_final.parquet"
 )  # Input file
 OUTPUT_CORR_CSV_PATH = os.path.join(
     script_dir, "../data/vdem_correlations_with_corruption_pandas.csv"

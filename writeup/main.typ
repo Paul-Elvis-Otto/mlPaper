@@ -8,6 +8,14 @@
   size: 11pt,
 )
 
+#let appendix(body) = {
+  set heading(
+    numbering: "A",
+    supplement: [Appendix]
+  )
+  counter(heading).update(0)
+  body
+}
 #align(center, text(17pt)[
   *Predicting democratic backsliding with Machine learning* \ Model comparison
 ])
@@ -42,56 +50,71 @@
 #set heading(numbering: "1.")
 #outline()
 
-
 #pagebreak()
-
 #set page(header: [
     #set text(9pt)
     #smallcaps[Ujwal Neethipudi, Paul Elvis Otto, Saurav Jha]
     #h(1fr) Hertie School Machine Learning Spring 2025
   ],
 )
+#outline(
+  target: heading.where(supplement: [Appendix]),
+  title: [Appendix]
+)
 
-= Motivation and Context
+#outline(
+  title: [List of Figures],
+  target: figure.where(kind: image),
+)
 
-In an era characterized by pervasive democratic erosion, emerging conflicts, and the ascent of radical right movements in Europe, a systematic and data-driven approach to analyzing and predicting these shifts is urgently required. The complex nature of these multifaceted challenges calls for an analytical framework capable of capturing their inherent dynamism. Recent advances in data availability have rendered the phenomenon of democratic backsliding both measurable and observable, enabling us to harness a wealth of indicators for rigorous analysis as can be seen in @v2x_libdem_avg_total.
-
-#figure(
-  image("plots/v2x_libdem_avg_all_countries.png", width: 80%),
-  caption: [Liberal democracy fullfillment index over time, average of all countries in dataset.],
-) <v2x_libdem_avg_total>
-
-This paper focuses on an exemplary investigation that benchmarks various machine learning approaches using preselected data from the V-Dem dataset (Coppedge, 2025). In times of acute political uncertainty, it is essential for democracies worldwide to monitor the evolution of their own political landscapes as well as those of their international partners. A critical issue in this context is that democratic backsliding is often perceived as a spontaneous event rather than a discernible developmental trend. By applying sophisticated predictive models, we aim to unveil underlying patterns in democratic decline, thereby contributing to the formulation of early warning systems and the broader effort to safeguard democratic institutions.
 #pagebreak()
 
-= Methods outside of Machine Learning
-
-The underlying assumption of this Project is that there is a measureable change rate of the _liberal democracy index_ as it is defined by #cite(<Vdemcodebook2025>,form: "prose") and therefore an assumption about a cutof value can be made. To identify that value we can look at the distribution of $Delta "v2x_libdem" $ over an interval of 3 years.
+= Motivation and Context
+With the rise in populist parties and the posfactual time we live in a lot of problems are accounted to this authoritarianf perspective. one of them is Corruption. Due to the advancements that have been made in Machine learning we have decided to analyse further the interplay between policitacl corrupten and the potential predictors for that.
+In the sprehre of political science there are multiple datasets that measure corruption and the possible predictors. Allthough most of them dont combine as nicely with the other predicotrs that we want to analyse. Therefore we have decided on using the Vdem dataset as our entry point to the data analysis. In short Vdem is an aggregated dataset that uses multiple sources to combine in one dataset, the dataset is composed of multiple indices, that measuere the state of diffrerent states around the world. In this Final report we want to limit some of the data as we will show in @assumption.
 
 #figure(
-image("plots/v2x_libdem_delta_over_3.png"),
-caption: [v2x_libdem change over 3 years],
-)<v2x_libdem_delta_over_3>
+image("plots/avg_v2x_corr.png"),
+caption: [
+average of political corruption over time
+]
+)<avg_v2x_corr>
+#pagebreak()
+
+= Our Hypothesis
+Vdem on its own already delivers a properly constructedt corruption index, that takes into account multiple different points of resoureces. The Index is split into multiple sub indices such as Public and politicial corruption. see the figure down below for a dependencie tree of the dataset.
+
+We argue that with the help of machine learning models we can successfully predict the corruption level of a country based on factors that are not included within the current indicators for corruption. The claim lies in the assumption that political parttaking as well as the ability to parttake correlates highly with multiple other datapoints that are already provided and with widely available data such as the GdP of a country.
+
+We argue that especially the social issues can be used as strong predictors for the level of corruption in the Vdem dataset.
+
+
+= Assumpotions and limits <assumption>
+We feel the need to explain the stepts that we will take in the further analysis of the dataset as they are not self explainatory in the further cleaning of the data.
++ *We Subset for liberal western Democracies*: We argue that a subsetting of the dataset might not seem to be essential in the context of corruption, but under the inherently different design of States in the sense of authoritatiran perspective, it is essential foR the model success to not only build an environment in which the data, as is, is compareable but also the states behind it. Therefore we have subset the data for Liberal western democracies, as we assume them to be hightrust societies where corruption is not inherent in their state structure as it would be with rent seeking states as shown by #cite(<ross2001>, form: "prose") in "Does Oil hinder democracies". The full list of Countires can be found in @ap:countries-list.
+
++ *Limiting of the Time*: We see the need to limit the data, not only to fill NA values but to keep a compareable time frame of the different countries, such as the deepter integration of the European union as the differnce in justiciable account of corruption has been normalized among the member states, it would make sense to set the limit lower then the 1980s to train a model that can also predict that data but under the lens of non isolated development in political interaction with that topic we choose not do pursue that.
+
+On the matter of _normal_ problems in the dataset we need to highlight the non availability of different indeicies, that stems from the fact that the dataset introduced multiple varibales in a progressive manner. Due to that we have decided to limit the numbers variables that we will use for the prediction. Another point that we have taken into account is the dependencies of the data. Vdem gives an overview of the dataset and how the different indices are constucted at #cite(<Vdemcodebook2025>, form: "prose") but that informationis not mapped into data, thus the result of the this project report is also a comprehensive mapping of the Vdem Dataset, made available as a github gist and included in this repository.
+
+
+= Reproduceability
+To make this analysis reproduceable within the means of it we organized this analysis
+
+
+= Subset and EDA
+To make t
 
 
 
 
+== Subset
+To properly use the model to predict the Target it was necessary to filter the dataset further, for that we implemented a filtering to only keep the bare variables of the dataset without any additional operations as they are included by the authors of vdem.
+#footnote[To make this process reproduceable we organised the dataset subsetting process in a pipeline that can be run from the root of the project dir on github, manual or with a makefile] In the next step we filtered for non numeric features and removed as pointed out in the missing values.
 
+== EDA
 
-//#set quote(block: true)
-//#quote(attribution: [Vdem])[
-//  Question: To what extent is the ideal of liberal democracy achieved?
-//]
-
-Here this index is composed of multiple metrix that have been collected by vdem and the index is normaly scaled from 0 to 1, interpretation following that as well. We argue that a backslide can be interpreted as a change in the score @Vdemcodebook2025[p. 2-8, 16, 122]
-
-
-$ Delta s = 0.1 := "Democratic Backslide" $
-
-Under this assumption we developed a baseline log regression model that can classify the democratic backslide
-
-@v2x_libdem_avg_total shows the democratic backsliding over time
-
+To get a first overview of the data and potential cross dependencies that we havent captured yet with our dependencie mapping a correlation matrix was created #footnote[Script: `./src/corr_matrix_plot.py`] This correlation matrix directly pointed out more highspots that after a manual correction have been removed. The 
 
 
 #pagebreak()
@@ -99,19 +122,45 @@ Under this assumption we developed a baseline log regression model that can clas
   title: [List of Figures],
   target: figure.where(kind: image),
 )
-
 #pagebreak()
+
+
 #bibliography("works.bib", style: "harvard-cite-them-right")
+//////////////////////// Here goes the complete appendix of the doc/////////////////////////
+#show: appendix
+
+= Tables and Data <app1>
+… your appendix content …
+
+= List of Countries <ap:countries-list>
+- Austria  
+- Belgium  
+- Bulgaria  
+- Croatia  
+- Cyprus  
+- Czech Republic  
+- Denmark  
+- Estonia  
+- Finland  
+- France  
+- Germany  
+- Greece  
+- Hungary  
+- Ireland  
+- Italy  
+- Latvia  
+- Lithuania  
+- Luxembourg  
+- Malta  
+- Netherlands  
+- Poland  
+- Portugal  
+- Romania  
+- Slovakia  
+- Slovenia  
+- Spain  
+- Sweden  
+- United States of America
+- United Kingdom
 
 
-= Appendix A
-
-//#align(center)[
-//  #let results = csv("test.csv")
-//
-//  #table(
-//   columns: 2,
-//   [*Condition*], [*Result*],
-//   ..results.flatten(),
-//  )
-//]

@@ -1,12 +1,8 @@
+# install / load packages in one go
 library(dplyr)
-library(pak)
 library(vdemdata)
-
-# Load vdem dataset into a df
-df <- vdemdata::vdem
-
-
-# Set the countries we want to keep in the dataset
+library(nanoparquet)
+# define what we need
 eu_iso3 <- c(
   "AUT",
   "BEL",
@@ -35,47 +31,39 @@ eu_iso3 <- c(
   "ESP",
   "SWE"
 )
+vartypes <- c("A*", "A", "B", "C")
+year_cut <- 1970
 
-df_countries <- df %>%
-  filter(
-    country_text_id %in% eu_iso3
-  )
-
-# print for debug
-#df_countries
-
-# subset the df for data only after 1970
-
-df_countries_years <- df_countries %>%
-  filter(
-    year >= 1970
-  )
-
-into <- vdemdata::var_info(
-  "v2pscomprg_sd"
-)
-into
-
-var_to_use <- c("A*", "A", "B", "C")
-
-# Get all variables of type "C" from the V-Dem codebook
-c_vars <- vdemdata::codebook %>%
-  filter(vartype %in% var_to_use) %>%
-  arrange(tag)
-
-# Inspect the first few
-head(c_vars)
-
-# get all the core variable names, for further search
-all_core_vars <- c_vars %>%
-  select(name, tag, vartype)
-all_core_vars
-
-list_of_vars <- all_core_vars %>%
-  select(tag)
+# pull the list of tags for our chosen vartypes
+list_of_vars <- vdemdata::codebook %>%
+  filter(vartype %in% vartypes) %>%
+  pull(tag)
 list_of_vars
-typeof(list_of_vars)
 
-main_df <- df_countries_years %>%
-  select(all_of(list_of_vars))
-main_df
+list_of_indices <- vdemdata::codebook %>%
+  filter(vartype == "D") %>%
+  pull(tag)
+list_of_indices
+
+main_df <- vdemdata::vdem %>%
+  filter(country_text_id %in% eu_iso3, year >= year_cut) %>%
+  select(
+    country_text_id,
+    year,
+    any_of(list_of_vars),
+    any_of(list_of_indices)
+  ) %>%
+  # prefix all index columns with "INDEX_"
+  rename_with(~ paste0("INDEX_", .), any_of(list_of_indices))
+
+glimpse(main_df)
+
+num_main_df <- main_df %>%
+  select(country_text_id, where(is.numeric))
+glimpse(num_main_df)
+
+print("writing subset to file")
+nanoparquet::write_parquet(main_df, "data/subset.parquet")
+print("success")
+print("writing numeric subset to file")
+nanoparquet::write_parquet(num_main_df, "data/subset_numeric.parquet")
