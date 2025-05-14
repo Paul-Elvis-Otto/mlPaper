@@ -4,7 +4,7 @@ library(nanoparquet)
 
 # define what we need
 vartypes <- c("A*", "A", "B", "C")
-year_cut <- 1970
+year_cut <- 1950
 
 # core vars and indices
 list_of_vars <- vdemdata::codebook %>%
@@ -29,7 +29,7 @@ drop_vars <- c(
 main_df <- vdemdata::vdem %>%
   filter(year >= year_cut) %>%
   select(
-    country_text_id,
+    country_name,
     year,
     any_of(list_of_vars),
     any_of(list_of_indices)
@@ -43,7 +43,7 @@ glimpse(main_df)
 
 # numeric‐only subset (country_text_id + all numeric cols)
 num_main_df <- main_df %>%
-  select(country_text_id, where(is.numeric))
+  select(country_name, where(is.numeric))
 
 glimpse(num_main_df)
 
