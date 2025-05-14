@@ -144,7 +144,27 @@ Follwoing we also did that for the individual variables to assets that better.
 
 These two analysis show us important indicators, first of all, the western liberal democracy index has a very high correlation with the corruption index and the components of it as in our variables as well. 
 
+
+
+
 This leads us to something we already anticipated to not distort our next modeling process we will need handle parts of the data differently. To further manifest that we clustered the different countries.
+
+
+
+
+
+
+
+Based on this knowledge gain we decided to create a subset that focuses on liberal western democracies, as the suggested data would also end in that cluster and as, from a theoretical point of view, corruption is also a sociietal problem which would also factor in with our models. We will perform further analysis for booth datasets.
+
+#figure(
+  image("./plots/missing_data_comparison.png", width: 80%),
+  caption: [
+   Missing data in Full dataset and subset
+  ],
+)
+
+
 
 
 We start this EDA by first looking in the development of corruption over time for all countries. as the first step we combine our own knowledge on the impact of political climate and corruption, therefore we ran a simple regresseion between the Liberal democracies index and the corruption index,  this regression already shows that there is a high cross correlation between these two. so that the liberal democracy index already explains around 25% of the model.
@@ -155,11 +175,13 @@ We then moved on to assesing the data. We removed all the indices that are in th
 
 After that we ran a correlation test between the individual variables and our target, that gave us more insight into the cross dependent factors. Here we included the top 10 predictors. see table below.
 
-= Data Cleaning
+= Data Imputation
 
-Here Focus on how we filled NAs and what other cleaning measures we did such as the removal of the variables that are inherrint to the corruption indices
+To ensure rigorous model construction, we employ a tree-based imputation strategy to address missing entries within our cross-national time-series dataset. This approach offers considerable flexibility in capturing complex, non-linear relationships among governance quality, economic output, and social development indicators, which often interact in threshold-dependent or multiplicative fashions. Unlike global linear estimators or simple mean replacements, a decision-tree imputer partitions the feature space along data-driven boundaries, thereby generating imputations that reflect underlying heterogeneity more faithfully. Moreover, decision trees inherently detect and exploit high-order interactions without requiring the modeller to specify interaction terms a priori; as a result, the imputation algorithm “learns” country-specific patterns whereby, for example, a missing education indicator may be jointly determined by institutional quality and prior GDP growth.
 
+Economic and political variables frequently exhibit heavy-tailed distributions and regime-dependent variance—manifest in crises, transitions, or other structural breaks—yet tree-based methods mitigate the undue influence of extreme observations by constructing splits that isolate homogeneous subgroups. In contrast to mean- or linear-based imputations, which may be skewed by outliers and produce implausible values during turbulent periods, our imputer preserves the integrity of the data’s tail behavior. Crucially, by performing imputations within each country’s temporal block—sorting observations by year and grouping on country identifiers—the algorithm respects the panel structure, borrowing strength from related indicators without introducing cross-country contamination and thus maintaining realistic within-country trajectories.
 
+As a non-parametric method, decision-tree imputation obviates the stringent distributional assumptions—such as residual normality or linearity—imposed by parametric techniques like Gaussian expectation–maximization, affording more credible estimates when the true data-generating process deviates from classical families. Finally, from a computational perspective, tree‐based imputation scales linearly with sample size and can be parallelized across national units. The resulting tree structures also afford transparency, enabling inspection of the variables driving each imputation and thereby enhancing interpretability relative to “black-box” multivariate models.
 
 = Machine learning Models
 
