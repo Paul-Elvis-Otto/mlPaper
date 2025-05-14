@@ -185,15 +185,84 @@ As a non-parametric method, decision-tree imputation obviates the stringent dist
 
 = Machine learning Models
 
-In the following section we will explain the different models that we have used and benchmark them. To  not repear our selfs we will proceed in the following way, we will explain the different steps that we took throughot the modeling process and then in a shorter summary present the models for our split in to different subsets for liberal democracies. Also this chapter with the overall identification of the best predictors we want to view it as a baseline and recall these results for when we apply our theoretical analysis of the relation of gender and corruption
+In the ensuing section, we delineate and evaluate the array of machine learning techniques employed in our analysis. To avoid unnecessary repetition, we first describe the sequential steps undertaken throughout the modeling process—encompassing data preparation, feature engineering, subsequently provide a concise overview of the specific models applied to the subset of liberal democracies. This chapter, which also establishes the principal predictors of corruption, serves as a methodological baseline. Its findings will be revisited and contextualized in our theoretical examination of the relationship between gender and corruption, thereby ensuring coherence between empirical benchmarking and subsequent inferential analysis.
 
 
 == Overall Model
+In this chapter, we present a comprehensive synthesis of model performance metrics and benchmarking results derived from the fully imputed variable dataset. We proceed to identify the principal determinants of corruption and conduct a systematic comparison of the various methodological approaches employed. The chapter concludes with a detailed documentation of our benchmarking procedures and an interpretive discussion of the relative strengths and limitations of each modeling strategy.
 
 
 === Linear Models
 
 
+For the unadjusted model we ran we got the following results:
+
+#align(center)[
+#grid(
+  columns: (1fr, 1fr),
+  [*Subset*],
+  [*Full Dataset*]
+)
+]
+
+
+#grid(
+  columns: (1fr, 1fr),
+
+three-line-table[
+| Model | Test MSE | Test R²  | Best α    |
+| ----- | -------- | -------- | --------- |
+| OLS   | 0.000568 | 0.978477 | NaN       |
+| Ridge | 0.000591 | 0.977602 | 46.415888 |
+| Lasso | 0.023009 | 0.128624 | 1.764095  |
+],
+three-line-table[
+| Model | Test MSE | Test R²  | Best α   |
+| ----- | -------- | -------- | -------- |
+| OLS   | 0.010738 | 0.868308 | NaN      |
+| Ridge | 0.003625 | 0.955539 | 0.305386 |
+| Lasso | 0.076984 | 0.055894 | 2.831639 |
+]
+
+)
+
+#align(center)[
+#grid(
+  columns: (1fr,1fr),
+  
+   image("./plots/benchmark_full_linear.png", width: 80%),
+  image("./plots/benchmark_sub_linear.png", width: 80%),
+)
+
+]
+#figure(
+  image("./plots/benchmark_full_linear.png", width: 80%),
+  caption: [
+    Benchmark Full linear dataset
+  ],
+)
+
+#figure(
+  image("./plots/benchmark_sub_linear.png", width: 80%),
+  caption: [
+    Benchmark Subset linear dataset
+  ],
+)
+
+
+#figure(
+  image("./plots/benchmark_full_linear_scatter.png", width: 80%),
+  caption: [
+    Benchmark Full linear dataset
+  ],
+)
+
+#figure(
+  image("./plots/benchmark_sub_linear_scatter.png", width: 80%),
+  caption: [
+    Benchmark Subset linear dataset
+  ],
+)
 === Tree Based approaches
 
 
