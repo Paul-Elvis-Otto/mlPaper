@@ -1,0 +1,26 @@
+Social variables
+v2clacjstw
+v2clprptyw
+v2clslavef
+v2cldmovew
+v2csgender
+v2pepwrgen
+v2pepwrsoc
+v2clacjstw_osp
+v2cldiscw
+2pepwrses
+v2clacjust
+v2peapsecon
+v2peasjsoecon
+v2peasbecon
+v2pepwrgen
+v2clgencl
+v2peapsgen
+v2peasjgen
+v2peasbgen
+v2cldmovew
+v2clslavef
+v2csgender
+v2mefemjrn
+v2lgfemleg
+v2pepwrgen

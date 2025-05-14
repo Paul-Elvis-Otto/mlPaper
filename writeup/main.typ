@@ -1,3 +1,4 @@
+#import "@preview/tablem:0.2.0": tablem, three-line-table
 #set page(
   paper: "us-letter",
     numbering: "1",
@@ -88,6 +89,13 @@ We argue that with the help of machine learning models we can successfully predi
 
 We argue that especially the social issues can be used as strong predictors for the level of corruption in the Vdem dataset.
 
+#tablem[
+  
+| R-squared| Adj. R-squared| Residual Std. Error| F-statistic| Model p-value|
+|---------:|--------------:|-------------------:|-----------:|-------------:|
+|     0.238|          0.238|               0.247|    7940.234|             0|
+
+]
 
 = Assumpotions and limits <assumption>
 We feel the need to explain the stepts that we will take in the further analysis of the dataset as they are not self explainatory in the further cleaning of the data.

@@ -10,7 +10,7 @@
 .DEFAULT_GOAL := help
 
 # Phony targets: these are not files
-.PHONY: help build build-data clean clean-data clean-temp build-correlation build-explaintop model-compare
+.PHONY: help build build-data clean clean-data clean-temp build-correlation build-explaintop model-compare table
 
 # Default target / Help
 help: ## Show this help message
@@ -58,6 +58,10 @@ model-compare: ## Run model comparison script
 	@echo "Running Model Compare..."
 	uv run ./models/model_comparison.py
 	@echo "Model comparison finished."
+
+table:
+	@echo "Build all tables"
+	Rscript ./src/R/reg_corr_lib_demoncracy.R
 
 # --- Convenience Targets ---
 build: build-data ## Compile the project (builds data)
