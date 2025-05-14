@@ -70,8 +70,104 @@
 
 #pagebreak()
 
+= Introduction
+
+Corruption remains a persistent challenge faced by countries across the globe, affecting governance, economic stability, societal trust, and overall quality of life. The severity and scope of corruption's impact, however, vary significantly depending on local contexts, institutional robustness, and sociopolitical factors. With this project, our goal is to systematically identify and analyze consistent predictors of corruption across multiple dimensions and geographic contexts. The inherent complexity of studying corruption emerges notably from difficulties in defining, operationalizing, and measuring corruption itself, as well as ensuring consistent and comparable data across a substantial number of countries and time periods.
+
+To effectively address this complexity, we have selected the Varieties of Democracy (V-Dem) dataset as the cornerstone of our analysis. V-Dem offers comprehensive coverage with a large number of countries, a broad temporal scope, and a rich array of indicators collected using a rigorous, state-of-the-art methodology. The robustness and consistency of this dataset enable us to conduct detailed and nuanced analyses without necessitating reliance on multiple external data sources, thereby maintaining methodological coherence and facilitating clear interpretability of our findings. To further enhance transparency and reproducibility, we developed several helper functions in R, specifically tailored to streamline dataset importation and pre-processing, while mitigating common issues that typically arise from handling large and complex datasets. The complete analytical workflow, including these helper functions, is integrated into a reproducible environment supported by a comprehensive Makefile, ensuring ease of replication and robustness against potential errors or inconsistencies.
+
+Recognizing that mere statistical replication of the V-Dem dataset would yield limited insights, we complemented our empirical model evaluation with a rigorous theoretical framework informed by existing literature. Extensive research has consistently highlighted gender as a significant factor influencing perceptions, prosecution patterns, and predictive models related to corruption. Motivated by these insights, we utilize the gender-related variables provided by V-Dem to develop an additional predictive model specifically designed to examine how gender disparities influence corruption levels across countries. By incorporating gender-focused analysis, we seek to contribute substantively to ongoing debates regarding the intersectionality of corruption and societal inequality.
+
+We further acknowledge that corruption manifests differently depending on national and regional contexts, requiring nuanced differentiation when assessing diverse countries. To address this variability systematically, we adopted a mixed-methods approach complemented by rigorous statistical techniques, detailed comprehensively in Appendix 1. This approach allowed us to group countries strategically based on their socio-political, economic, and institutional characteristics, thereby enhancing the specificity, accuracy, and policy relevance of our predictive models.
+
+An additional methodological consideration was the treatment of missing data, which inevitably arises in large, cross-national datasets like V-Dem. To effectively manage this issue while maintaining both computational efficiency and methodological integrity, we employed a tree-based imputation strategy tailored to country-specific characteristics. This approach minimizes the risk of introducing unintended cross-country correlations, ensuring that our analyses accurately reflect national-level realities rather than artifacts introduced by data handling procedures.
+
+
+
+
+= Vdem in detail
+
+For the building of the prediction model we used the vdem dataset that we will explain in short summary before we target it in the EDA.
+
+The Varieties of Democracy (V-Dem) dataset implements a large scale anaylis in the context of comaprative political science. Its construction involves a systematic process of aggregating expert evaluations on a wide range of indicators. A global network of country specialists contributes their knowledge by responding to numerous specific questions related to different aspects of political regimes. V-Dem conceptualizes democracy along five distinct yet interrelated dimensions: electoral, liberal, participatory, deliberative, and egalitarian.
+
+Vdem provides different types of indices high and mid level. For the EDA we kept both in and based on the results of the we recived from the EDA decided to remove multiple.
+
+Vdem therefore puts us in a position of asessing the predictors of corruption from various levels. Once it enables us to assets wether we will need to lock the model to a specific region, and or wether that we need to take other percautions, in working with the data.
+
+The dataset also gives some constraints, as this is data that is aggregated by experts in interviews, quilative assesments, and surveys the data collection is impacted by the state of a country, therefore the data can be missing/ not covering enough for partial or complete authoritarian regimes.
+
+As external sources we used economic data on the GDP and the distribution by gender.
+
+
+= EDA
+
+We started the EDA by first getting an overview of the correlation of the indices with each other.
+
+
+
+We start this EDA by first looking in the development of corruption over time for all countries. as the first step we combine our own knowledge on the impact of political climate and corruption, therefore we ran a simple regresseion between the Liberal democracies index and the corruption index,  this regression already shows that there is a high cross correlation between these two. so that the liberal democracy index already explains around 25% of the model.
+
+Therefore we have decided to limit the scope of the modeling process to only liberal democracies, as we assets that the variation in the liberal democracy index is not a problem for builind a comprehensive model. Another reason for this subset is the quality of the data as that is more consistent and complete for the by us defined liberal democracies for a full list of them see @ap:countries-list. 
+
+We then moved on to assesing the data. We removed all the indices that are in the dataset, we only used the individual variables that would compose these indexes.
+
+After that we ran a correlation test between the individual variables and our target, that gave us more insight into the cross dependent factors. Here we included the top 10 predictors. see table below.
+
+== Limitations and subseting
+
+The Vdem dataset brings even though we already subssetted for the somewhat compareable countries additional limitations, most concisting of variableS that only have been introduced in the later releases of the dataset. Therefore we proceded with the following startegies.
+We imputed the missing values with the help of randomforrest imputing on a country basis to not also introduce cross correlaions between the countries. we also decided not to use mean imputing due to the potential problematic of filling to much data in on the basis on a to small input.
+We also decided to drop variables that overall only have entries in a fixed amount of years.
+
+== General Model
+
+We then proceded to build a model that used all the available raw variables and assesed wether we can predict corruption with the corruption index components removed and received the following resulst. (To not repear ourself, we will show the detailed methods in the next chapter.)
+
+For this baseline comaprison we chosen linear models as well as tree based approach. See the overall comparison(place figure here)
+
+
+= Predicting corruptoin in context
+
+As mentioned in the beginning of this report we dont want to only focus on the prediction of corruption itself but also set in a contextual frame an real life implications. 
+The current and past literarute suggests that the role of women in society has an undenieable effect on corruption itself, overall women percive corruption as more problematic then men, they tend to enforce anti corruption measures harder then men in similar postions, and most interesting and what we decided to reproduce they role in society overall has a direct effect on the occurrence of corruption.
+
+Therefore we decided to subset our dataset again to the following parameters.
+
++ Liberal democracies
++ GDP
++ Variables that target gender differences
++ Variables that measure explicitly womens access to politics, law and society
++ Time limited to start from 1960
+
+We performed the model building process on the basis on this statistical and theoretical subsetting of the data.
+
+= Prediction modeling
+
+In the  following parts we will explain in more detail the different challenges and outcomes from each modelling steps and end with an overall comparison of the models.
+The complete list of the variables that we have chosen can be found in the appendix.
+
+
+== Linear Models
+
+As we also did with the baseline we modeled an OLS regression for the model as 
+
+
+== Tree based approaches
+
+
+== Non linear approaches
+
+
+== Neural Networks
+
+
+
+
+
 = Motivation and Context
 With the rise in populist parties and the posfactual time we live in a lot of problems are accounted to this authoritarianf perspective. one of them is Corruption. Due to the advancements that have been made in Machine learning we have decided to analyse further the interplay between policitacl corrupten and the potential predictors for that.
+
 In the sprehre of political science there are multiple datasets that measure corruption and the possible predictors. Allthough most of them dont combine as nicely with the other predicotrs that we want to analyse. Therefore we have decided on using the Vdem dataset as our entry point to the data analysis. In short Vdem is an aggregated dataset that uses multiple sources to combine in one dataset, the dataset is composed of multiple indices, that measuere the state of diffrerent states around the world. In this Final report we want to limit some of the data as we will show in @assumption.
 
 #figure(
