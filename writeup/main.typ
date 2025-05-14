@@ -104,8 +104,47 @@ Furthermore, since expert evaluations involve inherently subjective judgments, t
 
 = EDA
 
-We started the EDA by first getting an overview of the correlation of the indices with each other.
+We started the EDA by first getting an overview of the correlation of the indices with each other. For all further analysis we already removed the variables that compose the index, so that they don't interfere with our analysis.
 
+For that we first started with a correlation heatmap of the different indices with each other as well as a ranking with corruption as our target. To get an overall impression of what the data looks like in context to each other.
+
+
+
+#figure(
+  image("./plots/indices_heatmap.png", width: 80%),
+  caption: [
+   Correlation heatmap of the different indices
+  ],
+)
+
+#figure(
+  image("./plots/index_corr_with_target_top80.png", width: 80%),
+  caption: [
+   Top 80 Correlation of indices with the Target
+  ],
+)
+
+
+Follwoing we also did that for the individual variables to assets that better.
+
+
+#figure(
+  image("./plots/var_heatmap.png", width: 80%),
+  caption: [
+   Correlation heatmap of the different indices
+  ],
+)
+
+#figure(
+  image("./plots/var_corr_with_target_top80.png", width: 80%),
+  caption: [
+   Top 80 Correlation of indices with the Target
+  ],
+)
+
+These two analysis show us important indicators, first of all, the western liberal democracy index has a very high correlation with the corruption index and the components of it as in our variables as well. 
+
+This leads us to something we already anticipated to not distort our next modeling process we will need handle parts of the data differently. To further manifest that we clustered the different countries.
 
 
 We start this EDA by first looking in the development of corruption over time for all countries. as the first step we combine our own knowledge on the impact of political climate and corruption, therefore we ran a simple regresseion between the Liberal democracies index and the corruption index,  this regression already shows that there is a high cross correlation between these two. so that the liberal democracy index already explains around 25% of the model.
