@@ -87,17 +87,19 @@ An additional methodological consideration was the treatment of missing data, wh
 
 = Vdem in detail
 
-For the building of the prediction model we used the vdem dataset that we will explain in short summary before we target it in the EDA.
+To fully understand the methodological considerations and limitations we encountered during the modeling and data analysis phase of this project, it is necessary to introduce and contextualize the Varieties of Democracy (V-Dem) dataset in greater detail.
 
-The Varieties of Democracy (V-Dem) dataset implements a large scale anaylis in the context of comaprative political science. Its construction involves a systematic process of aggregating expert evaluations on a wide range of indicators. A global network of country specialists contributes their knowledge by responding to numerous specific questions related to different aspects of political regimes. V-Dem conceptualizes democracy along five distinct yet interrelated dimensions: electoral, liberal, participatory, deliberative, and egalitarian.
+The V-Dem dataset is a widely recognized and rigorously constructed comparative political science resource, providing extensive cross-national coverage of democratic institutions, governance characteristics, and political outcomes. Developed through a collaborative effort involving hundreds of international scholars and country experts, the dataset is built upon systematic expert assessments, structured questionnaires, qualitative evaluations, and comprehensive country-specific knowledge. This methodical collection of information allows V-Dem to offer robust, nuanced, and multidimensional measures of democracy.
 
-Vdem provides different types of indices high and mid level. For the EDA we kept both in and based on the results of the we recived from the EDA decided to remove multiple.
+Specifically, the V-Dem framework conceptualizes democracy along five distinct yet interconnected dimensions: electoral democracy, liberal democracy, participatory democracy, deliberative democracy, and egalitarian democracy. Each dimension is operationalized through numerous indicators that capture various institutional features, governance practices, and societal norms, which, taken together, allow researchers to gain detailed insights into the functioning of democratic regimes and related political phenomena such as corruption.
 
-Vdem therefore puts us in a position of asessing the predictors of corruption from various levels. Once it enables us to assets wether we will need to lock the model to a specific region, and or wether that we need to take other percautions, in working with the data.
+Within the dataset, V-Dem provides both high-level indices—aggregated measures summarizing broad democratic principles—and mid-level indices, which offer more granular evaluations of specific democratic components. Initially, our exploratory data analysis (EDA) leveraged both sets of indices to gain a comprehensive understanding of the available variables. Subsequently, based on insights drawn from our initial analysis, we identified redundancies and correlations among certain indicators, prompting us to strategically eliminate several indices. This process ensured model parsimony while preserving the explanatory power and interpretability of our predictive models.
 
-The dataset also gives some constraints, as this is data that is aggregated by experts in interviews, quilative assesments, and surveys the data collection is impacted by the state of a country, therefore the data can be missing/ not covering enough for partial or complete authoritarian regimes.
+Utilizing V-Dem data enables us to examine predictors of corruption at varying levels of granularity, facilitating analyses that range from broad global trends to regionally focused models. This flexibility is crucial in understanding whether particular predictive relationships hold consistently across different geographical contexts or whether region-specific modeling considerations and controls are necessary. Consequently, insights from our initial analyses using V-Dem have significantly guided our modeling choices—such as determining whether to segment our models geographically or to adopt specific methodological precautions.
 
-As external sources we used economic data on the GDP and the distribution by gender.
+Despite these notable strengths, the use of the V-Dem dataset also imposes certain constraints that must be explicitly acknowledged. Since the data is primarily aggregated from expert assessments, qualitative interviews, and comprehensive surveys, the accuracy and comprehensiveness of the dataset are inherently sensitive to country-specific political environments and conditions. Particularly in authoritarian or semi-authoritarian contexts, access to accurate and objective information may be limited, posing challenges for data collection and leading to incomplete or partially missing data points. Consequently, analyses conducted with the V-Dem dataset must consider potential biases or gaps resulting from these limitations. To mitigate the influence of such biases, we adopted rigorous imputation strategies tailored specifically for country-level characteristics, as previously described, thereby aiming to preserve data integrity and model accuracy.
+
+Furthermore, since expert evaluations involve inherently subjective judgments, the reliability of V-Dem measures may vary slightly based on the expertise and perceptions of individual assessors. While V-Dem employs robust methodologies to aggregate and validate these evaluations, it remains critical to interpret findings with caution, maintaining awareness of potential subjectivities inherent to expert-based measurements.
 
 
 = EDA
@@ -114,20 +116,44 @@ We then moved on to assesing the data. We removed all the indices that are in th
 
 After that we ran a correlation test between the individual variables and our target, that gave us more insight into the cross dependent factors. Here we included the top 10 predictors. see table below.
 
-== Limitations and subseting
+= Data Cleaning
 
-The Vdem dataset brings even though we already subssetted for the somewhat compareable countries additional limitations, most concisting of variableS that only have been introduced in the later releases of the dataset. Therefore we proceded with the following startegies.
-We imputed the missing values with the help of randomforrest imputing on a country basis to not also introduce cross correlaions between the countries. we also decided not to use mean imputing due to the potential problematic of filling to much data in on the basis on a to small input.
-We also decided to drop variables that overall only have entries in a fixed amount of years.
-
-== General Model
-
-We then proceded to build a model that used all the available raw variables and assesed wether we can predict corruption with the corruption index components removed and received the following resulst. (To not repear ourself, we will show the detailed methods in the next chapter.)
-
-For this baseline comaprison we chosen linear models as well as tree based approach. See the overall comparison(place figure here)
+Here Focus on how we filled NAs and what other cleaning measures we did such as the removal of the variables that are inherrint to the corruption indices
 
 
-= Predicting corruptoin in context
+
+= Machine learning Models
+
+In the following section we will explain the different models that we have used and benchmark them. To  not repear our selfs we will proceed in the following way, we will explain the different steps that we took throughot the modeling process and then in a shorter summary present the models for our split in to different subsets for liberal democracies. Also this chapter with the overall identification of the best predictors we want to view it as a baseline and recall these results for when we apply our theoretical analysis of the relation of gender and corruption
+
+
+== Overall Model
+
+
+=== Linear Models
+
+
+=== Tree Based approaches
+
+
+=== Non Linear Models
+
+
+== Liberal Democracies
+
+
+=== Linear Models
+
+
+=== Tree Based approaches
+
+
+=== Non Linear Models
+
+
+
+
+= Predicting corruption in context
 
 As mentioned in the beginning of this report we dont want to only focus on the prediction of corruption itself but also set in a contextual frame an real life implications. 
 The current and past literarute suggests that the role of women in society has an undenieable effect on corruption itself, overall women percive corruption as more problematic then men, they tend to enforce anti corruption measures harder then men in similar postions, and most interesting and what we decided to reproduce they role in society overall has a direct effect on the occurrence of corruption.

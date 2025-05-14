@@ -30,7 +30,7 @@ eu_iso3 <- c(
   "ESP",
   "SWE"
 )
-year_cut <- 1970
+year_cut <- 1950
 
 # all A*, A, B, C vars
 vartypes <- c("A*", "A", "B", "C")
@@ -70,7 +70,8 @@ preds <- c(
   "v2peasjgen",
   "v2peasbgen",
   "v2mefemjrn",
-  "v2lgfemleg"
+  "v2lgfemleg",
+  "e_gdp"
 )
 
 # 2. subset & select -------------------------------------------------------
@@ -107,7 +108,8 @@ model <- lm(
       v2peasjgen +
       v2peasbgen +
       v2mefemjrn +
-      v2lgfemleg,
+      v2lgfemleg +
+      egdp,
   data = df_mod
 )
 
